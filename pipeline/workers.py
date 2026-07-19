@@ -53,7 +53,7 @@ def _build(event_q, stage, factory_tpu, factory_cpu, device, cpu_fallback):
             _emit(event_q, type="status", stage=stage,
                   msg=f"{stage}: Edge TPU {device} ready")
             return eng, device
-        except EngineError as e:
+        except Exception as e:      # delegate load OR TPU interpreter init
             if not cpu_fallback:
                 raise
             _emit(event_q, type="status", stage=stage,
