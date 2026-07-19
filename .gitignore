@@ -1,8 +1,11 @@
 __pycache__/
 *.pyc
 
-# inference results are produced on the CM5, not committed
-output/passed/*
-output/rejected/*
-!output/passed/.gitkeep
-!output/rejected/.gitkeep
+# runtime output produced on the CM5, not committed
+data/captures/*
+data/passed/*
+data/rejected/*
+data/results.csv
+!data/captures/.gitkeep
+!data/passed/.gitkeep
+!data/rejected/.gitkeep

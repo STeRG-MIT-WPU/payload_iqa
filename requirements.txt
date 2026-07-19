@@ -1,0 +1,13 @@
+# Core (both CM5 and dev machines)
+numpy
+pillow
+tifffile
+imagecodecs
+opencv-python
+psutil
+PyQt5
+
+# TFLite runtime -- pick ONE depending on the machine:
+#   CM5 / Raspberry Pi OS:   pip install tflite-runtime
+#   Windows/other dev boxes: pip install ai-edge-litert
+# (engines.py tries tflite_runtime, then ai_edge_litert, then tensorflow)

@@ -1,0 +1,35 @@
+{
+  "input_size": 320,
+  "strides": [
+    8,
+    16,
+    32
+  ],
+  "grids": [
+    40,
+    20,
+    10
+  ],
+  "anchor_sizes": [
+    [
+      16,
+      32
+    ],
+    [
+      64,
+      128
+    ],
+    [
+      192,
+      288
+    ]
+  ],
+  "variances": [
+    0.1,
+    0.2
+  ],
+  "labels": [
+    "face"
+  ],
+  "normalization": "uint8 input, quant params map raw RGB to (x/127.5 - 1)"
+}
