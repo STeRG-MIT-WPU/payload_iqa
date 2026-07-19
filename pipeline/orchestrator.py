@@ -16,6 +16,7 @@ appended to data/results.csv.
 import csv
 import multiprocessing as mp
 import queue
+import sys
 import time
 
 from . import config
@@ -41,7 +42,10 @@ class Pipeline:
         self.cfg.ensure_dirs()
         self._init_csv()
 
-        ctx = mp.get_context("spawn")   # same behaviour on Windows and the CM5
+        # Windows only supports spawn; on Linux use fork -- it is faster and
+        # avoids named-semaphore rebuild failures seen with spawn on some
+        # Raspberry Pi OS setups (SemLock._rebuild -> FileNotFoundError).
+        ctx = mp.get_context("spawn" if sys.platform == "win32" else "fork")
         self._stop_evt = ctx.Event()
         self._events = ctx.Queue()
         q_cap = ctx.Queue(maxsize=self.cfg.queue_size)
