@@ -75,15 +75,21 @@ def _camera_loop(cfg, out_q, event_q, stop_evt):
     next_shot = time.monotonic()
     try:
         while not stop_evt.is_set():
-            ok, frame = cap.read()   # keep draining so the buffer stays fresh
+            # idle between shots instead of streaming at full fps -- decoding
+            # 30 frames/s just to discard them wastes CPU and power (matters
+            # on the CM5, which shares its budget with two Corals)
+            if time.monotonic() < next_shot:
+                time.sleep(0.05)
+                continue
+            next_shot = time.monotonic() + cfg.capture_interval
+
+            for _ in range(3):       # flush stale buffered frames
+                cap.grab()
+            ok, frame = cap.read()
             if not ok:
                 _emit(event_q, type="error", stage="capture",
                       msg="camera read failed")
-                time.sleep(0.5)
                 continue
-            if time.monotonic() < next_shot:
-                continue
-            next_shot = time.monotonic() + cfg.capture_interval
 
             name = _stamp_name()
             path = config.CAPTURES_DIR / name
